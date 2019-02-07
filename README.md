@@ -4,7 +4,7 @@
 ### Running the code
 Reproduction should be as easy as executing this in the root folder (after installing the dependencies with pip3):
 ```bash
-ipython3 experiments/mnistrotated.py groupwtacrnn nospatial seed=123
+ipython3 experiments/mnistrotated.py with groupwtacrnn nospatial seed=123
 ```
 In general:
 ```bash
