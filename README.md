@@ -8,7 +8,7 @@ ipython3 experiments/mnistrotated.py with groupwtacrnn nospatial seed=123
 ```
 In general:
 ```bash
-ipython3 experiments/database.py method optional_config seed=number
+ipython3 experiments/database.py with method optional_config seed=number
 ```
 where method is either
 * randominitcnn (Glorot Initialized Time Distributed CNN)
