@@ -18,8 +18,11 @@ class KerasWTACNN():
     def __init__(self, results_dir, config):
         self.results_dir = results_dir
         self.set_config(config)
-        self.loss = lambda true, pred: K.mean(K.square(pred - true), axis=-1)
-    
+        if 'pad_value' in self.config.keys():
+            self.loss = lambda true, pred: K.mean(K.square(pred - true) * K.cast(K.not_equal(true, self.config['pad_value']), K.floatx()), axis=-1)
+        else:
+            self.loss = lambda true, pred: K.mean(K.square(pred - true), axis=-1)
+
     def set_config(self, config):
         assert(np.mod(config['batch_size'], config['gpus']) == 0)
         self.config = config
