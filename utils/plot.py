@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib as mpl
 mpl.use('Agg') 
 import matplotlib.pyplot as plt
+import gc
 
 
 def plot(filepath, title, data, cmap=None, dpi=160):
@@ -18,12 +19,14 @@ def plot(filepath, title, data, cmap=None, dpi=160):
             raise NotImplementedError('Number of image channels must be 1 or 3!')
     if data.shape[-1] == 1:
         data = np.reshape(data, data.shape[:-1])
-    plt.figure(figsize=(30, 90), dpi=dpi)
+    fig = plt.figure(figsize=(30, 90), dpi=dpi)
     plt.imshow(data, vmin=0, vmax=1, interpolation='nearest', cmap=cmap)
     plt.title(title)
     plt.axis('off')
     plt.savefig(filepath, bbox_inches='tight', dpi=dpi)
-    plt.close() 
+    fig.clear()
+    plt.close(fig)
+    gc.collect()
 
 
 def make_mosaic(imgs, nrows, ncols, border=1, clip=False):
@@ -33,9 +36,9 @@ def make_mosaic(imgs, nrows, ncols, border=1, clip=False):
     """
     nimgs = imgs.shape[0]
     imshape = imgs.shape[1:]
-    mosaic = np.zeros((nrows * imshape[0] + (nrows - 1) * border,
-                       ncols * imshape[1] + (ncols - 1) * border,
-                       imshape[2]),
+    mosaic = np.ones((nrows * imshape[0] + (nrows - 1) * border,
+                      ncols * imshape[1] + (ncols - 1) * border,
+                      imshape[2]),
                       dtype=np.float32)
     paddedh = imshape[0] + border
     paddedw = imshape[1] + border

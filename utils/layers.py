@@ -1,6 +1,15 @@
+import numpy as np
 from keras.layers import *
+from keras.layers.convolutional_recurrent import ConvRNN2D
+from keras.layers.wrappers import Wrapper
+from keras.legacy import interfaces
+from keras import initializers, regularizers, constraints, activations
+from keras.utils.generic_utils import has_arg, object_list_uid
+from keras.layers.merge import _Merge
 from keras import backend as K
+import tensorflow as tf
 from keras.layers.recurrent import _generate_dropout_mask
+from keras.utils import conv_utils
 
 
 def __init__unroll(self, cell,
@@ -23,6 +32,41 @@ def __init__unroll(self, cell,
                                     **kwargs)
     self.input_spec = [InputSpec(ndim=5)]
 ConvRNN2D.__init__ = __init__unroll
+
+def get_initial_state(self, inputs):
+    # (samples, timesteps, rows, cols, filters)
+    initial_state = K.zeros_like(inputs)
+    # (samples, rows, cols, filters)
+    initial_state = K.sum(initial_state, axis=1)
+    shape = list(self.cell.kernel_shape)
+    shape[-1] = self.cell.filters
+    initial_state = self.cell.input_conv(initial_state,
+                                         # K.zeros(tuple(shape)), # does not work with Unrolled Optimization
+                                         K.constant(np.zeros(tuple(shape))),
+                                         padding=self.cell.padding)
+    # Fix for Theano because it needs
+    # K.int_shape to work in call() with initial_state.
+    keras_shape = list(K.int_shape(inputs))
+    keras_shape.pop(1)
+    if K.image_data_format() == 'channels_first':
+        indices = 2, 3
+    else:
+        indices = 1, 2
+    for i, j in enumerate(indices):
+        keras_shape[j] = conv_utils.conv_output_length(
+            keras_shape[j],
+            shape[i],
+            padding=self.cell.padding,
+            stride=self.cell.strides[i],
+            dilation=self.cell.dilation_rate[i])
+    initial_state._keras_shape = keras_shape
+
+    if hasattr(self.cell.state_size, '__len__'):
+        return [initial_state for _ in self.cell.state_size]
+    else:
+        return [initial_state]
+ConvRNN2D.get_initial_state = get_initial_state
+
 
 
 class ConvMinimalRNN2DCell(Layer):
@@ -399,6 +443,7 @@ class ConvMinimalRNN2D(ConvRNN2D):
                  dropout=0.,
                  recurrent_dropout=0.,
                  **kwargs):
+        #cell = ConvLSTM2DCell(filters=filters,
         cell = ConvMinimalRNN2DCell(filters=filters,
                               kernel_size=kernel_size,
                               strides=strides,
@@ -506,6 +551,20 @@ class ConvMinimalRNN2D(ConvRNN2D):
     def recurrent_dropout(self):
         return self.cell.recurrent_dropout
 
+    def get_initial_state(self, inputs):
+        # (samples, timesteps, rows, cols, filters)
+        initial_state = K.zeros_like(inputs)
+        # (samples, rows, cols, filters)
+        initial_state = K.sum(initial_state, axis=1)
+
+        # for some reason the original variant of this method's input_conv part here does not work with Unrolled Optimization
+        # fortunately, it is not needed
+
+        if hasattr(self.cell.state_size, '__len__'):
+            return [initial_state for _ in self.cell.state_size]
+        else:
+            return [initial_state]
+
     def get_config(self):
         config = {'filters': self.filters,
                   'kernel_size': self.kernel_size,
@@ -535,6 +594,7 @@ class ConvMinimalRNN2D(ConvRNN2D):
     @classmethod
     def from_config(cls, config):
         return cls(**config)
+
 
 class RegularizedLambda(Lambda):
     def __init__(self, function, output_shape=None, mask=None, arguments=None, activity_regularizer=None, **kwargs):

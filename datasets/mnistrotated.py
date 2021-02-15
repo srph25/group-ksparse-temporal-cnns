@@ -1,5 +1,5 @@
 import numpy as np
-from scipy.misc import imresize
+from utils.pil import fromimage, toimage, imresize, imread, imsave
 from PIL import Image
 from keras.datasets import mnist
 from keras.utils import to_categorical

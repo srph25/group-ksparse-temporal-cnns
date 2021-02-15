@@ -1,5 +1,5 @@
 import numpy as np
-from scipy.misc import imresize, imread
+from utils.pil import fromimage, toimage, imresize, imread, imsave
 import os
 import h5py
 import tqdm
