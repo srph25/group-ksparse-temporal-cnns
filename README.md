@@ -35,7 +35,7 @@ python3.7 -m pip install h5py==2.10.0 ipython==7.16.1 keras==2.2.4 matplotlib==3
 ### Running the code
 Reproduction should be as easy as executing this in the root folder (after installing all dependencies):
 ```bash
-ipython3 experiments/mnistrotated.py with groupwtacrnn nospatial seed=123
+python3.7 -m IPython experiments/mnistrotated.py with groupwtacrnn nospatial seed=123
 ```
 In general:
 ```bash
