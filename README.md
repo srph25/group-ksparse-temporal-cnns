@@ -49,12 +49,12 @@ where `dataset` is either:
 * `necanimal` : the NEC Animal natural video set, placing animal figures on turning table;
 
 `algorithm` is either:
+* `wtacnn` : Winner-Take-All (WTA) Time Distributed CNN Autoencoder,
+* `wtacrnn` : Winner-Take-All (WTA) Recurrent CNN Autoencoder,
 * `randominitcnn` : Glorot Initialized Time Distributed CNN,
 * `randominitcrnn` : Glorot Initialized Recurrent CNN,
 * `denoisingcnn` : Denoising Time Distributed CNN Autoencoder,
 * `denoisingcrnn` : Denoising Recurrent CNN Autoencoder,
-* `wtacnn` : Winner-Take-All (WTA) Time Distributed CNN Autoencoder,
-* `wtacrnn` : Winner-Take-All (WTA) Recurrent CNN Autoencoder,
 * `vgg19` : ImageNet Pretrained Time Distributed VGG19,
 * `groupwtacnn` : Group k-Sparse Time Distributed CNN Autoencoder,
 * `groupwtacrnn` : Group k-Sparse Recurrent CNN Autoencoder;
