@@ -1,6 +1,7 @@
 # Group k-Sparse Temporal Convolutional Neural Networks: Pre-training for Video Classification
 ## Python source code for reproducing the experiments described in the paper
-[Paper](https://ieeexplore.ieee.org/abstract/document/8852057)\
+[Paper (IEEE Xplore)](https://ieeexplore.ieee.org/abstract/document/8852057)\
+\
 Code is mostly self-explanatory via file, variable and function names; but more complex lines are commented.\
 Designed to require minimal setup overhead, using as much Keras and sacred integration and reusability as possible.
 
@@ -103,6 +104,19 @@ utils/\
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;preprocessing.py : functions for ZCA whitening\
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;utils.py : additional things, including\
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`VideoSequence` : Keras Sequence subclass generating random videos
+
+
+### Citation:
+```latex
+@inproceedings{milacski2019group,
+  title={Group k-sparse temporal convolutional neural networks: unsupervised pretraining for video classification},
+  author={Milacski, Zolt{\'a}n {\'A} and P{\'o}czos, Barnab{\'a}s and L{\H{o}}rincz, Andr{\'a}s},
+  booktitle={2019 International Joint Conference on Neural Networks (IJCNN)},
+  pages={1--10},
+  year={2019},
+  organization={IEEE}
+}
+```
 
 
 ### Contact:
