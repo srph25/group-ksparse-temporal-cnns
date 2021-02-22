@@ -104,3 +104,7 @@ utils/\
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;utils.py : additional things, including\
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`VideoSequence` : Keras Sequence subclass generating random videos
 
+
+### Contact:
+In case of any questions, feel free to create an issue here on GitHub, or mail me at [srph25@gmail.com](mailto:srph25@gmail.com).
+
